@@ -21,10 +21,15 @@ st.markdown("""
     .card-market {
         background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
     }
     .card-strategy {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .telemetry-box {
+        background-color: #161b22; padding: 25px; border-radius: 12px; 
+        border: 1px solid #30363d; min-height: 290px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -102,7 +107,7 @@ if run_btn:
                             <p style="margin:5px 0 0 0; color:#dfe6e9; font-size:12px;">Standard Buy-and-Hold strategy over 24 months.</p>
                         </div>
                     """, unsafe_allow_html=True)
-                    st.write("") # spacing
+                    
                     st.markdown(f"""
                         <div class="card-strategy">
                             <h4 style="margin:0; color: #e1f5fe; font-size:14px; text-transform:uppercase;">⚡ Quant Strategy Return</h4>
@@ -112,19 +117,23 @@ if run_btn:
                     """, unsafe_allow_html=True)
 
                 with col2:
-                    st.markdown("<div style='background-color: #161b22; padding: 22px; border-radius: 12px; border: 1px solid #30363d; min-height: 235px;'>", unsafe_allow_html=True)
-                    st.subheader("🚨 LIVE SIGNAL TELEMETRY")
-                    st.write(f"**Current Price:** `${live_price:.2f}`")
-                    st.write(f"**5-Day Fast Momentum:** `${current_short_ma:.2f}` | **20-Day Trend Baseline:** `${current_long_ma:.2f}`")
-                    st.markdown("---")
-                    
+                    # Yahan par humne saare element ko single block ke andar bundle kiya hai
                     if current_short_ma > current_long_ma:
-                        st.markdown("<div style='background-color: #1e4620; padding: 15px; border-radius: 8px; border-left: 5px solid #38ef7d;'><h3 style='margin:0; color:#38ef7d;'>🟢 STRONGLY SUGGEST TO BUY</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Bullish momentum breakout detected. Short-term average leads asset pricing indicators.</p></div>", unsafe_allow_html=True)
+                        signal_html = "<div style='background-color: #1e4620; padding: 15px; border-radius: 8px; border-left: 5px solid #38ef7d; margin-top:15px;'><h3 style='margin:0; color:#38ef7d;'>🟢 STRONGLY SUGGEST TO BUY</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Bullish momentum breakout detected. Short-term average leads asset pricing indicators.</p></div>"
                     elif current_short_ma < current_long_ma:
-                        st.markdown("<div style='background-color: #611f1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ff4d4d;'><h3 style='margin:0; color:#ff4d4d;'>🔴 STRONGLY SUGGEST TO SELL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Bearish momentum drop detected. High exposure risk identified. Liquidation recommended.</p></div>", unsafe_allow_html=True)
+                        signal_html = "<div style='background-color: #611f1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ff4d4d; margin-top:15px;'><h3 style='margin:0; color:#ff4d4d;'>🔴 STRONGLY SUGGEST TO SELL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Bearish momentum drop detected. High exposure risk identified. Liquidation recommended.</p></div>"
                     else:
-                        st.markdown("<div style='background-color: #4d4d1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ffeb3b;'><h3 style='margin:0; color:#ffeb3b;'>🟡 HOLD / MARKET NEUTRAL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Sideways market movement. Wait for clearer vector indicators.</p></div>", unsafe_allow_html=True)
-                    st.markdown("</div>", unsafe_allow_html=True)
+                        signal_html = "<div style='background-color: #4d4d1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ffeb3b; margin-top:15px;'><h3 style='margin:0; color:#ffeb3b;'>🟡 HOLD / MARKET NEUTRAL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Sideways market movement. Wait for clearer vector indicators.</p></div>"
+
+                    st.markdown(f"""
+                        <div class="telemetry-box">
+                            <h3 style="margin-top:0; color: white;">🚨 LIVE SIGNAL TELEMETRY</h3>
+                            <p style="font-size:16px; margin: 5px 0;"><b>Current Price:</b> <span style="color:#38ef7d;">${live_price:.2f}</span></p>
+                            <p style="font-size:14px; color:#b2bec3;"><b>5-Day Fast Momentum:</b> ${current_short_ma:.2f} | <b>20-Day Trend Baseline:</b> ${current_long_ma:.2f}</p>
+                            <hr style="border-color:#30363d; margin: 15px 0;">
+                            {signal_html}
+                        </div>
+                    """, unsafe_allow_html=True)
 
                 # --- ADVANCED MATPLOTLIB CHART ---
                 st.markdown("---")
