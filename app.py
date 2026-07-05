@@ -3,7 +3,6 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import requests
 
 # 1. Page Layout and Theme Settings
 st.set_page_config(page_title="Quant Analytics Pro", layout="wide", initial_sidebar_state="expanded")
@@ -64,14 +63,9 @@ if not run_btn:
 if run_btn:
     with st.spinner("⏳ Establishing API secure handshake & syncing historical pipelines..."):
         try:
-            # Custom headers to prevent Yahoo Finance from blocking Streamlit Cloud Cloud IPs
-            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'}
-            
-            # Fetch data with explicit session configuration
             stock_obj = yf.Ticker(ticker)
             data = stock_obj.history(period="2y")
             
-            # Fallback mechanism if Cloud network fails or blocks the specific asset
             if data.empty:
                 st.warning(f"⚠️ Yahoo API timed out or refused connection for '{ticker}'. Falling back to secure asset data engine (AAPL).")
                 ticker = "AAPL"
@@ -133,11 +127,12 @@ if run_btn:
                 else:
                     signal_html = "<div style='background-color: #4d4d1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ffeb3b; margin-top:15px;'><h3 style='margin:0; color:#ffeb3b;'>🟡 HOLD / MARKET NEUTRAL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Sideways market movement. Wait for clearer vector indicators.</p></div>"
 
+                # Fixed text visibility using inline color styles
                 st.markdown(f"""
                     <div class="telemetry-box">
-                        <h3 style="margin-top:0; color: white;">🚨 LIVE SIGNAL TELEMETRY</h3>
-                        <p style="font-size:16px; margin: 5px 0;"><b>Current Price:</b> <span style="color:#38ef7d;">${live_price:.2f}</span></p>
-                        <p style="font-size:14px; color:#b2bec3;"><b>5-Day Fast Momentum:</b> ${current_short_ma:.2f} | <b>20-Day Trend Baseline:</b> ${current_long_ma:.2f}</p>
+                        <h3 style="margin-top:0; color: #ffffff !important;">🚨 LIVE SIGNAL TELEMETRY</h3>
+                        <p style="font-size:18px; margin: 10px 0; color: #ffffff !important;"><b>Current Price:</b> <span style="color:#38ef7d; font-weight:bold; font-size:20px;">${live_price:.2f}</span></p>
+                        <p style="font-size:14px; color: #e0e0e0 !important; margin: 5px 0;"><b>5-Day Fast Momentum:</b> <span style="color:#ff4d4d;">${current_short_ma:.2f}</span> | <b>20-Day Trend Baseline:</b> <span style="color:#4A90E2;">${current_long_ma:.2f}</span></p>
                         <hr style="border-color:#30363d; margin: 15px 0;">
                         {signal_html}
                     </div>
