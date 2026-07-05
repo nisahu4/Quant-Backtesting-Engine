@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # 1. Page Layout and Theme Settings
 st.set_page_config(page_title="Quant Analytics Pro", layout="wide", initial_sidebar_state="expanded")
 
-# Custom CSS for Premium Dark-Tech Look
+# Custom CSS for Premium Design Layout
 st.markdown("""
     <style>
     .main { background-color: #0e1117; color: #ffffff; }
@@ -26,10 +26,6 @@ st.markdown("""
     .card-strategy {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    .telemetry-box {
-        background-color: #161b22; padding: 25px; border-radius: 12px; 
-        border: 1px solid #30363d; min-height: 290px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -120,23 +116,24 @@ if run_btn:
                 """, unsafe_allow_html=True)
 
             with col2:
+                # Custom container card with 100% visible native elements
+                st.subheader("🚨 LIVE SIGNAL TELEMETRY")
+                
+                # Using native Streamlit metric for absolute high-contrast text rendering
+                st.metric(label="Current Price", value=f"${live_price:.2f}")
+                
+                st.write(f"**5-Day Fast Momentum:** `${current_short_ma:.2f}`")
+                st.write(f"**20-Day Trend Baseline:** `${current_long_ma:.2f}`")
+                
+                st.markdown("---")
+                
+                # Native status boxes that fit dark theme perfectly automatically
                 if current_short_ma > current_long_ma:
-                    signal_html = "<div style='background-color: #1e4620; padding: 15px; border-radius: 8px; border-left: 5px solid #38ef7d; margin-top:15px;'><h3 style='margin:0; color:#38ef7d;'>🟢 STRONGLY SUGGEST TO BUY</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Bullish momentum breakout detected. Short-term average leads asset pricing indicators.</p></div>"
+                    st.success("🟢 **STRONGLY SUGGEST TO BUY** \n\n Bullish momentum breakout detected. Short-term average leads asset pricing indicators.")
                 elif current_short_ma < current_long_ma:
-                    signal_html = "<div style='background-color: #611f1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ff4d4d; margin-top:15px;'><h3 style='margin:0; color:#ff4d4d;'>🔴 STRONGLY SUGGEST TO SELL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Bearish momentum drop detected. High exposure risk identified. Liquidation recommended.</p></div>"
+                    st.error("🔴 **STRONGLY SUGGEST TO SELL** \n\n Bearish momentum drop detected. High exposure risk identified. Liquidation recommended.")
                 else:
-                    signal_html = "<div style='background-color: #4d4d1f; padding: 15px; border-radius: 8px; border-left: 5px solid #ffeb3b; margin-top:15px;'><h3 style='margin:0; color:#ffeb3b;'>🟡 HOLD / MARKET NEUTRAL</h3><p style='margin:5px 0 0 0; color: white; font-size:12px;'>Sideways market movement. Wait for clearer vector indicators.</p></div>"
-
-                # Fixed text visibility using inline color styles
-                st.markdown(f"""
-                    <div class="telemetry-box">
-                        <h3 style="margin-top:0; color: #ffffff !important;">🚨 LIVE SIGNAL TELEMETRY</h3>
-                        <p style="font-size:18px; margin: 10px 0; color: #ffffff !important;"><b>Current Price:</b> <span style="color:#38ef7d; font-weight:bold; font-size:20px;">${live_price:.2f}</span></p>
-                        <p style="font-size:14px; color: #e0e0e0 !important; margin: 5px 0;"><b>5-Day Fast Momentum:</b> <span style="color:#ff4d4d;">${current_short_ma:.2f}</span> | <b>20-Day Trend Baseline:</b> <span style="color:#4A90E2;">${current_long_ma:.2f}</span></p>
-                        <hr style="border-color:#30363d; margin: 15px 0;">
-                        {signal_html}
-                    </div>
-                """, unsafe_allow_html=True)
+                    st.info("🟡 **HOLD / MARKET NEUTRAL** \n\n Sideways market movement. Wait for clearer vector indicators.")
 
             # --- ADVANCED MATPLOTLIB CHART ---
             st.markdown("---")
