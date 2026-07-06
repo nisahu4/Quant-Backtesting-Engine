@@ -66,7 +66,7 @@ if run_btn:
                 st.warning(f"⚠️ Yahoo API timed out or refused connection for '{ticker}'. Falling back to secure asset data engine (AAPL).")
                 ticker = "AAPL"
                 stock_obj = yf.Ticker(ticker)
-                data = stock_obj.history(period="2y")
+                data = stock_obj.history(period="1y")
 
             if isinstance(data.columns, pd.MultiIndex):
                 data.columns = data.columns.get_level_values(0)
