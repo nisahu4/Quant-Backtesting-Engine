@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 1. Page Layout and Theme Settings
-st.set_page_config(page_title="Quant Analytics Pro", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Quant Backtesting Engine", layout="wide", initial_sidebar_state="expanded")
 
 # Custom CSS for Premium Design Layout
 st.markdown("""
